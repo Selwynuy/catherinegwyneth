@@ -1,26 +1,164 @@
 @import "tailwindcss";
 
+/*
+  ────────────────────────────────────────────────────────────────────────────
+  Catherine Gwyneth O. Valencia — "Editorial Studio"
+  ────────────────────────────────────────────────────────────────────────────
+  A warm, bold-editorial system. Bone/cream paper, ink near-black, and ONE
+  restrained accent: a muted terracotta/clay. The accent is a seasoning, never
+  a flood — it carries index numbers, one word in the hero, active states, and
+  focus rings. Hierarchy comes from scale + whitespace + hairlines, not borders
+  everywhere. Serif display for headlines (editorial), grotesque for UI/body.
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ── Paper & ink (warm-tinted neutrals, never pure #fff / #000) ───────── */
+  --paper: #f6f1e7; /* the default surface: warm bone */
+  --paper-2: #efe8da; /* slightly deeper bone for raised cards */
+  --paper-3: #e7dece; /* hairline tint / placeholder fill */
+  --ink: #16140f; /* near-black, warm */
+  --ink-2: #2a261d; /* the dark statement band */
+
+  /* ── Text ─────────────────────────────────────────────────────────────── */
+  --foreground: var(--ink);
+  --muted: #6b6354; /* secondary text on paper (AA on bone) */
+  --subtle: #8a8170; /* tertiary labels */
+  --on-ink: #f3ecdd; /* text on the dark band */
+  --on-ink-muted: #b6ab95; /* secondary text on the dark band */
+
+  /* ── Accent: muted terracotta / clay ──────────────────────────────────── */
+  --accent: #c25b3a;
+  --accent-strong: #a8492c; /* hover / pressed */
+  --accent-soft: color-mix(in oklab, var(--accent) 14%, transparent);
+  --accent-ring: color-mix(in oklab, var(--accent) 55%, transparent);
+
+  /* ── Lines ────────────────────────────────────────────────────────────── */
+  --hairline: color-mix(in oklab, var(--ink) 14%, transparent);
+  --hairline-strong: color-mix(in oklab, var(--ink) 24%, transparent);
+  --hairline-on-ink: color-mix(in oklab, var(--on-ink) 16%, transparent);
+
+  --background: var(--paper);
 }
 
+/* Map our tokens into Tailwind's theme so utilities like bg-paper, text-ink,
+   text-accent, border-hairline, and font-display all work. */
 @theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-paper-3: var(--paper-3);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-on-ink: var(--on-ink);
+  --color-on-ink-muted: var(--on-ink-muted);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
+  --color-hairline-on-ink: var(--hairline-on-ink);
+
+  --font-sans: var(--font-grotesque);
+  --font-display: var(--font-serif);
+  --font-mono: var(--font-mono-code);
+
+  /* A tighter editorial tracking for big display type. */
+  --tracking-poster: -0.03em;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+* {
+  border-color: var(--hairline);
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Offset anchored sections so the fixed-ish header never covers headings. */
+  scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
 body {
-  background: var(--background);
+  background: var(--paper);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  /* Subtle paper grain via two faint radial tints — keeps the bone from
+     looking flat without ever reading as "a gradient background". */
+  background-image:
+    radial-gradient(
+      120% 80% at 100% 0%,
+      color-mix(in oklab, var(--accent) 5%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(
+      90% 70% at 0% 100%,
+      color-mix(in oklab, var(--ink) 4%, transparent),
+      transparent 50%
+    );
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Editorial display: serif, tight tracking, optical balance. */
+.font-display {
+  font-feature-settings: "ss01", "liga", "kern";
+  letter-spacing: var(--tracking-poster);
+}
+
+/* Visible, on-brand focus ring for keyboard users. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Thin uppercase mono label used for kickers + index numbers. */
+.label {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* A page-width hairline rule that fades at the ends — editorial divider. */
+.rule {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--hairline-strong) 12%,
+    var(--hairline-strong) 88%,
+    transparent
+  );
+}
+
+/* Gentle bob for the hero scroll cue. */
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-\[bob_1\.8s_ease-in-out_infinite\] {
+    animation: none;
+  }
 }
