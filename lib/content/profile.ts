@@ -1,11 +1,7 @@
 /**
  * Single source of truth for Catherine's identity, contact details, and links.
- *
- * ──────────────────────────────────────────────────────────────────────────
- *  TO FINISH THE SITE, fill in the three values marked `FILL_ME` below with
- *  Catherine's real email, Instagram handle, and LinkedIn URL. Everything else
- *  on the page reads from this file, so you only edit it in one place.
- * ──────────────────────────────────────────────────────────────────────────
+ * Everything on the page reads from this file, so contact info and social
+ * links are edited in one place.
  */
 
 export type SocialLink = {
@@ -35,18 +31,18 @@ export const profile = {
   location: "Philippines · Working remotely worldwide",
   availability: "Available for new projects",
 
-  // ── FILL THESE IN ─────────────────────────────────────────────────────────
-  email: "hello@example.com", // FILL_ME: her real email
+  // ── CONTACT & SOCIAL ──────────────────────────────────────────────────────
+  email: "gwynethvalencia22@gmail.com",
   social: {
     instagram: {
       label: "Instagram",
-      href: "https://instagram.com/your_handle", // FILL_ME
-      handle: "@your_handle", // FILL_ME
+      href: "https://instagram.com/peekataku",
+      handle: "@peekataku",
     },
     linkedin: {
       label: "LinkedIn",
-      href: "https://linkedin.com/in/your-profile", // FILL_ME
-      handle: "in/your-profile", // FILL_ME
+      href: "https://www.linkedin.com/in/kat-valencia-9412893a3/",
+      handle: "in/kat-valencia",
     },
   } satisfies Record<string, SocialLink>,
   // ──────────────────────────────────────────────────────────────────────────
